@@ -62,7 +62,16 @@
 					<div id="add-button" class="btn btn-success rounded-pill"><i class="fa fa-plus" style="color: rgb(0, 109, 115)"></i> Add Task</div>
 				</div>
 			</div>
-			
+			<?php if (isset($_SESSION['message'])): ?>
+				<div class="alert alert-green alert-dismissible fade show">
+				<strong>Success!</strong>
+					<?php 
+						echo $_SESSION['message']; 
+						unset($_SESSION['message']);
+					?>
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></span>
+				</div>
+			<?php endif ?>
 			<div class="row gy-3">
 				<div class="col-xl-4 col-md-6">
 					<div class="">
@@ -133,7 +142,7 @@
 	<!-- END #app -->
 	
 	<!-- TASK MODAL -->
-	<form class="modal fade " id="form" tabindex="-1" action="" method="post">
+	<form class="modal fade " id="form" tabindex="-1" action="scripts.php" method="post">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -141,6 +150,7 @@
 					<button type="button" id="close-button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
 				<div class="modal-body">
+					<input type="hidden" name="taskId" id="task-id">
 					<div class="mb-3">
 						<label class="col-form-label">Title</label>
 						<input type="text" class="form-control" onkeyup="enableADD()" onCut="return false" id="taskTitle" name="title">
@@ -149,11 +159,11 @@
 					<div class="mb-3">
 						<label class="col-form-label">Type</label>
 						<div class="form-check ms-3">
-							<input class="form-check-input" type="radio" value="Feature" name="type" id="feature" checked>
+							<input class="form-check-input" type="radio" value="1" name="type" id="feature" checked>
 							<label class="form-check-label" for="feature">Feature</label>
 						</div>
 						<div class="form-check ms-3">
-							<input class="form-check-input" type="radio" value="Bug" name="type" id="bug">
+							<input class="form-check-input" type="radio" value="2" name="type" id="bug">
 							<label class="form-check-label" for="bug">Bug</label>
 						</div>
 					</div>
@@ -161,19 +171,19 @@
 						<label class="col-form-label">Priority</label>
 						<select class="form-select" id="priority" name="priority">
 							<option selected disabled hidden value="default">Please select</option>
-							<option value="Low">Low</option>
-							<option value="Medium">Medium</option>
-							<option value="High">High</option>
-							<option value="Critical">Critical</option>
+							<option value="1">Low</option>
+							<option value="2">Medium</option>
+							<option value="3">High</option>
+							<option value="4">Critical</option>
 						</select>
 					</div>
 					<div class="mb-3">
 						<label class="col-form-label">Status</label>
 						<select id="status" class="form-select" name="status">
 							<option selected disabled hidden value="default">Please select</option>
-							<option value="to-do-tasks">To do</option>
-							<option value="in-progress-tasks">In progress</option>
-							<option value="done-tasks">Done</option>
+							<option value="1">To do</option>
+							<option value="2">In progress</option>
+							<option value="3">Done</option>
 						</select>
 					</div>
 					<div class="mb-3">
@@ -182,14 +192,14 @@
 					</div>
 					<div class="mb-3">
 						<label class="col-form-label">Description</label>
-						<textarea class="form-control" id="description" name="description"></textarea>
+						<textarea class="form-control" rows="5" id="description" name="description"></textarea>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-light text-black border" data-bs-dismiss="modal" id="cancel-button">Cancel</button>
-					<button type="button" onclick="deleteTask(ind)" class="btn btn-outline-danger border" id="delete-button">Delete</button>
-					<button type="submit" onclick="saveTask()" id="save-button" class="btn btn-primary" disabled>Save</button>
-					<button type="button" onclick="updateTask()" class="btn btn-primary" id="update-button">Update</button>
+					<button type="submit" name="delete" class="btn btn-outline-danger border" id="delete-button">Delete</button>
+					<button type="submit" name="save" id="save-button" class="btn btn-primary" disabled>Save</button>
+					<button type="submit" name="update" class="btn btn-primary" id="update-button">Update</button>
 				</div>
 			</div>
 		</div>

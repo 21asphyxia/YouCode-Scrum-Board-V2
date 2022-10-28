@@ -41,7 +41,7 @@
                 {
                     $icon = "bi bi-check2-circle text-success fs-3";
                 }
-                echo "<button id=".($row['id']-1)." class='row list-group-item-action mx-0 border' onclick='editTask()' draggable='true' ondragstart='drag(event)'>
+                echo "<button id=".$row['id']." class='row list-group-item-action mx-0 border' onclick='editTask(this.id)'>
                 <div class='col-1 m-auto'>
                     <i class='".$icon."'></i> 
                 </div>
@@ -69,7 +69,7 @@
         $type = $_POST['type'];
         $priority = $_POST['priority'];
         $status = $_POST['status'];
-        $task_datetime = $_POST['task_datetime'];
+        $task_datetime = $_POST['date'];
         $sql = "INSERT INTO tasks (title, description, type_id, priority_id, status_id, task_datetime) VALUES ('$title', '$description', '$type', '$priority', '$status', '$task_datetime')";
         if(mysqli_query($GLOBALS['conn'],$sql))
         {
@@ -88,14 +88,14 @@
     function updateTask()
     {
         //CODE HERE
-        $id = $_POST['id'];
+        $id = $_POST['taskId'];
         $title = $_POST['title'];
         $description = $_POST['description'];
         $type = $_POST['type'];
         $priority = $_POST['priority'];
         $status = $_POST['status'];
-        $task_datetime = $_POST['task_datetime'];
-        $sql = "UPDATE tasks SET title = '$title', description = '$description', type_id = '$type', priority_id = '$priority', status_id = '$status', task_datetime = '$task_datetime' WHERE id = '$id'";
+        $task_datetime = $_POST['date'];
+        $sql = "UPDATE tasks SET id = '$id',title = '$title', description = '$description', type_id = '$type', priority_id = '$priority', status_id = '$status', task_datetime = '$task_datetime' WHERE id = '$id'";
         mysqli_query($GLOBALS['conn'],$sql);
         //SQL UPDATE
         $_SESSION['message'] = "Task has been updated successfully !";
@@ -105,9 +105,17 @@
     function deleteTask()
     {
         //CODE HERE
+        $id = $_POST['taskId'];
         //SQL DELETE
+        $sql = "DELETE FROM tasks WHERE id='$id'";
+        mysqli_query($GLOBALS['conn'],$sql);
+        
         $_SESSION['message'] = "Task has been deleted successfully !";
 		header('location: index.php');
     }
 
 ?>
+
+
+
+
