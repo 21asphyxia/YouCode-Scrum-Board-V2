@@ -15,6 +15,9 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 	<!-- ================== END core-css ================== -->
 </head>
+<?php
+    include('scripts.php');
+?>
 <body>
 
 	<!-- BEGIN #app -->
@@ -64,33 +67,57 @@
 				<div class="col-xl-4 col-md-6">
 					<div class="">
 						<div class="text-white bg-dark rounded-xl">
-							<h4 class="p-2 fs-6">To do (<span id="to-do-tasks-count">0</span>)</h4>
-
+							<h4 class="p-2 fs-6">To do (<span id="to-do-tasks-count">
+								<?php 
+								$sql = "SELECT * FROM tasks WHERE status_id = 1";
+								global $conn;
+								$result = mysqli_query($conn, $sql);
+								$toDoTasksCount = mysqli_num_rows($result);
+								echo "$toDoTasksCount"?>
+							</span>)</h4>
+							
 						</div>
 						<div class="list-group " style="height:530px; overflow:auto" id="to-do-tasks" ondrop="dropToDo(event)" ondragover="allowDrop(event)">
 							<!-- TO DO TASKS HERE -->
+							<?php getTasks('To Do')?>
 						</div>
 					</div>
 				</div>
 				<div class="col-xl-4 col-md-6">
 					<div class="">
 						<div class="text-white bg-dark rounded-xl">
-							<h4 class="p-2 fs-6">In Progress (<span id="in-progress-tasks-count">0</span>)</h4>
+							<h4 class="p-2 fs-6">In Progress (<span id="in-progress-tasks-count">
+							<?php 
+								$sql = "SELECT * FROM tasks WHERE status_id = 2";
+								global $conn;
+								$result = mysqli_query($conn, $sql);
+								$toDoTasksCount = mysqli_num_rows($result);
+								echo "$toDoTasksCount"?>
+							</span>)</h4>
 
 						</div>
 						<div class="list-group " style="height:500px; overflow:auto;" id="in-progress-tasks" ondrop="dropInProgress(event)" ondragover="allowDrop(event)">
 							<!-- IN PROGRESS TASKS HERE -->
+							<?php getTasks('In Progress')?>
 						</div>
 					</div>
 				</div>
 				<div class="col-xl-4 col-md-6">
 					<div class="">
 						<div class="text-white bg-dark rounded-xl">
-							<h4 class="p-2 fs-6">Done (<span id="done-tasks-count">0</span>)</h4>
+							<h4 class="p-2 fs-6">Done (<span id="done-tasks-count">
+							<?php 
+								$sql = "SELECT * FROM tasks WHERE status_id = 3";
+								global $conn;
+								$result = mysqli_query($conn, $sql);
+								$toDoTasksCount = mysqli_num_rows($result);
+								echo "$toDoTasksCount"?>
+							</span>)</h4>
 
 						</div>
 						<div class="list-group" style="height:530px; overflow:auto" id="done-tasks" ondrop="dropDone(event)" ondragover="allowDrop(event)">
 							<!-- DONE TASKS HERE -->
+							<?php getTasks('Done')?>
 						</div>
 					</div>
 				</div>
@@ -106,18 +133,17 @@
 	<!-- END #app -->
 	
 	<!-- TASK MODAL -->
-	<form class="modal fade " id="form" tabindex="-1"
-	aria-hidden="true">
+	<form class="modal fade " id="form" tabindex="-1" action="" method="post">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Add Task</h5>
-					<button type="button" id="close-button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" id="close-button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
 				<div class="modal-body">
 					<div class="mb-3">
-						<label for="taskTitle" class="col-form-label">Title</label>
-						<input type="text" class="form-control" onkeyup="enableADD()" onCut="return false" id="taskTitle">
+						<label class="col-form-label">Title</label>
+						<input type="text" class="form-control" onkeyup="enableADD()" onCut="return false" id="taskTitle" name="title">
 						<div id="msg"></div>
 					</div>
 					<div class="mb-3">
@@ -133,7 +159,7 @@
 					</div>
 					<div class="mb-3">
 						<label class="col-form-label">Priority</label>
-						<select class="form-select" aria-label="Default select example" id="priority">
+						<select class="form-select" id="priority" name="priority">
 							<option selected disabled hidden value="default">Please select</option>
 							<option value="Low">Low</option>
 							<option value="Medium">Medium</option>
@@ -142,8 +168,8 @@
 						</select>
 					</div>
 					<div class="mb-3">
-						<label for="status" class="col-form-label">Status</label>
-						<select id="status" class="form-select" aria-label="Default select example">
+						<label class="col-form-label">Status</label>
+						<select id="status" class="form-select" name="status">
 							<option selected disabled hidden value="default">Please select</option>
 							<option value="to-do-tasks">To do</option>
 							<option value="in-progress-tasks">In progress</option>
@@ -151,18 +177,18 @@
 						</select>
 					</div>
 					<div class="mb-3">
-						<label for="date" class="col-form-label">Date</label>
-						<input type="date" class="form-control" id="date">
+						<label class="col-form-label">Date</label>
+						<input type="date" class="form-control" id="date" name="date">
 					</div>
 					<div class="mb-3">
-						<label for="description" class="col-form-label">Description</label>
-						<textarea class="form-control" id="description"></textarea>
+						<label class="col-form-label">Description</label>
+						<textarea class="form-control" id="description" name="description"></textarea>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-light text-black border" data-bs-dismiss="modal" id="cancel-button">Cancel</button>
 					<button type="button" onclick="deleteTask(ind)" class="btn btn-outline-danger border" id="delete-button">Delete</button>
-					<button type="button" onclick="saveTask()" id="save-button" class="btn btn-primary" disabled>Save</button>
+					<button type="submit" onclick="saveTask()" id="save-button" class="btn btn-primary" disabled>Save</button>
 					<button type="button" onclick="updateTask()" class="btn btn-primary" id="update-button">Update</button>
 				</div>
 			</div>
@@ -173,7 +199,7 @@
 	<script src="assets/js/vendor.min.js"></script>
 	<script src="assets/js/app.min.js"></script>
 	<!-- ================== END core-js ================== -->
-	<script src="assets/js/data.js"></script>
+	 <script src="assets/js/data.js"></script>
 	<script src="assets/js/app.js"></script>
 </body>
 </html>

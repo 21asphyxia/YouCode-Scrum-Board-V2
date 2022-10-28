@@ -32,7 +32,7 @@ let enableADD = () => {
 };
 
 // load tasks on website launch
-reloadTasks();
+// reloadTasks();
 
 function createTask() {
   // initialiser task form
@@ -170,71 +170,71 @@ function initTaskForm() {
   enableADD();
 }
 
-function reloadTasks() {
-  // Remove tasks elements
-  document.getElementById("to-do-tasks").innerHTML = `<!-- TO DO TASKS HERE -->`;
-  document.getElementById("in-progress-tasks").innerHTML = `<!-- IN PROGRESS TASKS HERE -->`;
-  document.getElementById("done-tasks").innerHTML = `<!-- DONE TASKS HERE -->`;
-  // Set Task count
-  let toDoCount = 0,
-    inProgressCount = 0,
-    doneCount = 0,
-    taskCount = 0;
-    document.getElementById("done-tasks-count").innerHTML = `${doneCount}`;
-    document.getElementById("in-progress-tasks-count").innerHTML = `${inProgressCount}`;
-    document.getElementById("to-do-tasks-count").innerHTML = `${toDoCount}`;
-  tasks.forEach((element) => {
-    let icon;
-    let statusIdValue;
-    if (element["status"] == "To Do") {
-      taskCount++;
-      toDoCount++;
-      icon = "bi bi-question-circle text-success fs-4";
-      statusIdValue = "to-do-tasks";
-    } else if (element["status"] == "In Progress") {
-      taskCount++;
-      inProgressCount++;
-      icon = "spinner-border spinner-border-sm text-success";
-      statusIdValue = "in-progress-tasks";
-    } else if (element["status"] == "Done") {
-      taskCount++;
-      doneCount++;
-      icon = "bi bi-check2-circle text-success fs-3";
-      statusIdValue = "done-tasks";
-    }
+// function reloadTasks() {
+//   // Remove tasks elements
+//   document.getElementById("to-do-tasks").innerHTML = `<!-- TO DO TASKS HERE -->`;
+//   document.getElementById("in-progress-tasks").innerHTML = `<!-- IN PROGRESS TASKS HERE -->`;
+//   document.getElementById("done-tasks").innerHTML = `<!-- DONE TASKS HERE -->`;
+//   // Set Task count
+//   let toDoCount = 0,
+//     inProgressCount = 0,
+//     doneCount = 0,
+//     taskCount = 0;
+//     document.getElementById("done-tasks-count").innerHTML = `${doneCount}`;
+//     document.getElementById("in-progress-tasks-count").innerHTML = `${inProgressCount}`;
+//     document.getElementById("to-do-tasks-count").innerHTML = `${toDoCount}`;
+//   tasks.forEach((element) => {
+//     let icon;
+//     let statusIdValue;
+//     if (element["status"] == "To Do") {
+//       taskCount++;
+//       toDoCount++;
+//       icon = "bi bi-question-circle text-success fs-4";
+//       statusIdValue = "to-do-tasks";
+//     } else if (element["status"] == "In Progress") {
+//       taskCount++;
+//       inProgressCount++;
+//       icon = "spinner-border spinner-border-sm text-success";
+//       statusIdValue = "in-progress-tasks";
+//     } else if (element["status"] == "Done") {
+//       taskCount++;
+//       doneCount++;
+//       icon = "bi bi-check2-circle text-success fs-3";
+//       statusIdValue = "done-tasks";
+//     }
 
     
-    document.getElementById("done-tasks-count").innerHTML = `${doneCount}`;
-    document.getElementById("in-progress-tasks-count").innerHTML = `${inProgressCount}`;
-    document.getElementById("to-do-tasks-count").innerHTML = `${toDoCount}`;
+//     document.getElementById("done-tasks-count").innerHTML = `${doneCount}`;
+//     document.getElementById("in-progress-tasks-count").innerHTML = `${inProgressCount}`;
+//     document.getElementById("to-do-tasks-count").innerHTML = `${toDoCount}`;
 
-    document.getElementById(statusIdValue).innerHTML += 
-        `
-        <button id="task${taskCount}" class="row list-group-item-action mx-0 border" onclick="editTask(${taskCount-1})" draggable="true" ondragstart="drag(event)">
-								<div class="col-1 m-auto">
-									<i class="${icon}"></i> 
-								</div>
-								<div class="col-11">
-									<div class="fs-6 text-dark fw-bolder">${element['title']}</div>
-									<div class="">
-										<div class="text-secondary">#${taskCount} created in ${element['date']}</div>
-										<div class="text-truncate" title="${element['description']}">${element['description']}</div>
-									</div>
-									<div class="mt-1 mb-2">
-										<span class="btn-primary px-2 py-1 rounded fw-bolder" style="font-size:0.6rem">${element['priority']}</span>
-										<span class="bg-light-600 rounded fw-bolder px-2 py-1" style="font-size:0.6rem">${element['type']}</span>
-									</div>
-								</div>
-							</button>
-        `;
-  });
+//     document.getElementById(statusIdValue).innerHTML += 
+//         `
+//         <button id="task${taskCount}" class="row list-group-item-action mx-0 border" onclick="editTask(${taskCount-1})" draggable="true" ondragstart="drag(event)">
+// 								<div class="col-1 m-auto">
+// 									<i class="${icon}"></i> 
+// 								</div>
+// 								<div class="col-11">
+// 									<div class="fs-6 text-dark fw-bolder">${element['title']}</div>
+// 									<div class="">
+// 										<div class="text-secondary">#${taskCount} created in ${element['date']}</div>
+// 										<div class="text-truncate" title="${element['description']}">${element['description']}</div>
+// 									</div>
+// 									<div class="mt-1 mb-2">
+// 										<span class="btn-primary px-2 py-1 rounded fw-bolder" style="font-size:0.6rem">${element['priority']}</span>
+// 										<span class="bg-light-600 rounded fw-bolder px-2 py-1" style="font-size:0.6rem">${element['type']}</span>
+// 									</div>
+// 								</div>
+// 							</button>
+//         `;
+//   });
 
-  //delete icon
-//<span class="col-1" id="deleteIcon" onclick=deleteTask(${taskCount-1})>
-//                    <i class="bi bi-trash fs-5" ></i>
-//                  </span>
+//   //delete icon
+// //<span class="col-1" id="deleteIcon" onclick=deleteTask(${taskCount-1})>
+// //                    <i class="bi bi-trash fs-5" ></i>
+// //                  </span>
 
-}
+// }
 
 let dragId;
 
