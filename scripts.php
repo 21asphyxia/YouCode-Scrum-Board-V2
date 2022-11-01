@@ -1,6 +1,6 @@
 <?php
     //INCLUDE DATABASE FILE
-    include_once('database.php');
+    require('database.php');
     //SESSSION IS A WAY TO STORE DATA TO BE USED ACROSS MULTIPLE PAGES
     session_start();
 
@@ -73,16 +73,13 @@
         $sql = "INSERT INTO tasks (title, description, type_id, priority_id, status_id, task_datetime) VALUES ('$title', '$description', '$type', '$priority', '$status', '$task_datetime')";
         if(mysqli_query($GLOBALS['conn'],$sql))
         {
-            echo "New record created successfully";
+            $_SESSION['message'] = "Task has been added successfully !";
+		    header('location: index.php');
         }
         else
         {
-            echo "Error: " . $sql . "<br>" . mysqli_error($GLOBALS['conn']);
-        }
-
-        //SQL INSERT
-        $_SESSION['message'] = "Task has been added successfully !";
-		header('location: index.php');
+            $_SESSION['message'] = "Task has not been added !";
+            header('location: index.php');}
     }
 
     function updateTask()
