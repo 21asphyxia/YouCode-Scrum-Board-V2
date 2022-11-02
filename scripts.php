@@ -92,7 +92,7 @@
         $priority = $_POST['priority'];
         $status = $_POST['status'];
         $task_datetime = $_POST['date'];
-        $sql = "UPDATE tasks SET id = '$id',title = '$title', description = '$description', type_id = '$type', priority_id = '$priority', status_id = '$status', task_datetime = '$task_datetime' WHERE id = '$id'";
+        $sql = "UPDATE tasks SET title = '$title', description = '$description', type_id = '$type', priority_id = '$priority', status_id = '$status', task_datetime = '$task_datetime' WHERE id = '$id'";
         mysqli_query($GLOBALS['conn'],$sql);
         //SQL UPDATE
         $_SESSION['message'] = "Task has been updated successfully !";
