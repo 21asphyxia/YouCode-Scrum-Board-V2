@@ -57,34 +57,74 @@
                     </div>
                 </div>
             </button>";}}
-        // echo "Fetch all tasks";
     }
 
 
     function saveTask()
     {
-        //CODE HERE
-        $title = $_POST['title'];
-        $description = $_POST['description'];
-        $type = $_POST['type'];
-        $priority = $_POST['priority'];
-        $status = $_POST['status'];
-        $task_datetime = $_POST['date'];
-        $sql = "INSERT INTO tasks (title, description, type_id, priority_id, status_id, task_datetime) VALUES ('$title', '$description', '$type', '$priority', '$status', '$task_datetime')";
-        if(mysqli_query($GLOBALS['conn'],$sql))
+        //form validation
+        $errors = array();
+        //Check if all fields are filled
+        if(empty($_POST['title']))      $errors['title'] = "Title is required";
+        if(empty($_POST['description']))$errors['description'] = "Description is required";
+        if(empty($_POST['type']))       $errors['type'] = "Type is required";
+        if(empty($_POST['priority']))   $errors['priority'] = "Priority is required";
+        if(empty($_POST['status']))     $errors['status'] = "Status is required";
+        if(empty($_POST['date']))       $errors['date'] = "Date is required";
+        
+        //Check if there are errors
+        if (count($errors) == 0)
         {
-            $_SESSION['message'] = "Task has been added successfully !";
-		    header('location: index.php');
+            //SQL insert query if there are no errors
+            $title = $_POST['title'];
+            $description = $_POST['description'];
+            $type = $_POST['type'];
+            $priority = $_POST['priority'];
+            $status = $_POST['status'];
+            $task_datetime = $_POST['date'];
+            $sql = "INSERT INTO tasks (title, description, type_id, priority_id, status_id, task_datetime) VALUES ('$title', '$description', '$type', '$priority', '$status', '$task_datetime')";
+            if(mysqli_query($GLOBALS['conn'],$sql))
+            {
+                $_SESSION['message'] = "Task has been added successfully !";
+                $_SESSION['msg_type'] = "success";
+                header('location: index.php');
+            }
+            else
+            {
+                $_SESSION['message'] = "Task has not been added !";
+                $_SESSION['msg_type'] = "danger";
+                header('location: index.php');
+            }
         }
         else
         {
-            $_SESSION['message'] = "Task has not been added !";
-            header('location: index.php');}
+            //If there are errors, redirect to index.php with errors
+            //Empty fields alerts
+            $_SESSION['titleErr'] = $errors['title'];
+            $_SESSION['descriptionErr'] = $errors['description'];
+            $_SESSION['typeErr'] = $errors['type'];
+            $_SESSION['priorityErr'] = $errors['priority'];
+            $_SESSION['statusErr'] = $errors['status'];
+            $_SESSION['dateErr'] = $errors['date'];
+            //launch js script to show already filled fields in modal
+            $_SESSION['error'] = "<script type = text/javascript>
+            createTask(); 
+            document.getElementById('taskTitle').value ='".$_POST['title']."' ;
+            document.getElementById('description').value = '".$_POST['description']."';
+            if (".$_POST['type']."=='1')
+            {document.getElementById('feature').checked=true;}
+            else {document.getElementById('bug').checked=true;}
+            document.getElementById('priority').value = '".$_POST['priority']."';
+            document.getElementById('status').value = '".$_POST['status']."';
+            document.getElementById('date').value = '".$_POST['date']."';
+            </script>";
+            header('location: index.php');
+        }
     }
 
     function updateTask()
     {
-        //CODE HERE
+        //SQL update query
         $id = $_POST['taskId'];
         $title = $_POST['title'];
         $description = $_POST['description'];
@@ -94,25 +134,21 @@
         $task_datetime = $_POST['date'];
         $sql = "UPDATE tasks SET title = '$title', description = '$description', type_id = '$type', priority_id = '$priority', status_id = '$status', task_datetime = '$task_datetime' WHERE id = '$id'";
         mysqli_query($GLOBALS['conn'],$sql);
-        //SQL UPDATE
+
         $_SESSION['message'] = "Task has been updated successfully !";
+        $_SESSION['msg_type'] = "success";
 		header('location: index.php');
     }
 
     function deleteTask()
     {
-        //CODE HERE
+        //SQL delete query
         $id = $_POST['taskId'];
-        //SQL DELETE
         $sql = "DELETE FROM tasks WHERE id='$id'";
         mysqli_query($GLOBALS['conn'],$sql);
         
         $_SESSION['message'] = "Task has been deleted successfully !";
+        $_SESSION['msg_type'] = "success";
 		header('location: index.php');
     }
-
 ?>
-
-
-
-
