@@ -28,7 +28,9 @@ function createTask() {
   document.getElementById("save-button").classList.remove("d-none");
   document.getElementById("cancel-button").classList.remove("d-none");
   // Ouvrir modal form
-  $("#form").modal("show");
+  $(document).ready(function() {
+    $('#form').modal('show');
+});
 }
 
 function editTask(index) {

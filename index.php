@@ -1,3 +1,7 @@
+<?php
+    include('scripts.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en" >
 <head>
@@ -15,9 +19,6 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 	<!-- ================== END core-css ================== -->
 </head>
-<?php
-    include('scripts.php');
-?>
 <body>
 
 	<!-- BEGIN #app -->
@@ -62,16 +63,22 @@
 					<div id="add-button" class="btn btn-success rounded-pill"><i class="fa fa-plus" style="color: rgb(0, 109, 115)"></i> Add Task</div>
 				</div>
 			</div>
-			<?php if (isset($_SESSION['message'])): ?>
-				<div class="alert alert-green alert-dismissible fade show">
-				<strong>Success!</strong>
-					<?php 
+			<!-- add,delete, update alert -->
+			<?php if (isset($_SESSION['message'])){
+				echo "<div ";
+
+				 if ($_SESSION['msg_type'] == "success") 
+				{echo "class='alert alert-green alert-dismissible fade show' >
+					<strong>Success! </strong>";}
+				else { echo "class='alert alert-red alert-dismissible fade show' >
+					<strong>Failure! </strong>";}
+					
 						echo $_SESSION['message']; 
 						unset($_SESSION['message']);
-					?>
-					<button type="button" class="btn-close" data-bs-dismiss="alert"></span>
-				</div>
-			<?php endif ?>
+					
+					echo '<button type="button" class="btn-close" data-bs-dismiss="alert"></span>
+				</div>';
+				} ?>
 			<div class="row gy-3">
 				<div class="col-xl-4 col-md-6">
 					<div class="">
@@ -86,7 +93,7 @@
 							</span>)</h4>
 							
 						</div>
-						<div class="list-group " style="height:530px; overflow:auto" id="to-do-tasks" ondrop="dropToDo(event)" ondragover="allowDrop(event)">
+						<div class="list-group " id="to-do-tasks" ondrop="dropToDo(event)" ondragover="allowDrop(event)">
 							<!-- TO DO TASKS HERE -->
 							<?php getTasks('To Do')?>
 						</div>
@@ -105,7 +112,7 @@
 							</span>)</h4>
 
 						</div>
-						<div class="list-group " style="height:500px; overflow:auto;" id="in-progress-tasks" ondrop="dropInProgress(event)" ondragover="allowDrop(event)">
+						<div class="list-group " id="in-progress-tasks" ondrop="dropInProgress(event)" ondragover="allowDrop(event)">
 							<!-- IN PROGRESS TASKS HERE -->
 							<?php getTasks('In Progress')?>
 						</div>
@@ -124,7 +131,7 @@
 							</span>)</h4>
 
 						</div>
-						<div class="list-group" style="height:530px; overflow:auto" id="done-tasks" ondrop="dropDone(event)" ondragover="allowDrop(event)">
+						<div class="list-group" id="done-tasks" ondrop="dropDone(event)" ondragover="allowDrop(event)">
 							<!-- DONE TASKS HERE -->
 							<?php getTasks('Done')?>
 						</div>
@@ -154,6 +161,10 @@
 					<div class="mb-3">
 						<label class="col-form-label">Title</label>
 						<input type="text" class="form-control" onkeyup="enableADD()" onCut="return false" id="taskTitle" name="title">
+						<?php if(isset($_SESSION['titleErr'])){
+							echo '<div class="alert alert-red mt-2" role="alert">'.$_SESSION['titleErr'].'</div>';
+							unset($_SESSION['titleErr']);
+						}?>
 						<div id="msg"></div>
 					</div>
 					<div class="mb-3">
@@ -166,6 +177,10 @@
 							<input class="form-check-input" type="radio" value="2" name="type" id="bug">
 							<label class="form-check-label" for="bug">Bug</label>
 						</div>
+						<?php if(isset($_SESSION['typeErr'])){
+							echo '<div class="alert alert-red mt-2" role="alert">'.$_SESSION['typeErr'].'</div>';
+							unset($_SESSION['typeErr']);
+						}?>
 					</div>
 					<div class="mb-3">
 						<label class="col-form-label">Priority</label>
@@ -176,6 +191,10 @@
 							<option value="3">High</option>
 							<option value="4">Critical</option>
 						</select>
+						<?php if(isset($_SESSION['priorityErr'])){
+							echo '<div class="alert alert-red mt-2" role="alert">'.$_SESSION['priorityErr'].'</div>';
+							unset($_SESSION['priorityErr']);
+						}?>
 					</div>
 					<div class="mb-3">
 						<label class="col-form-label">Status</label>
@@ -185,14 +204,26 @@
 							<option value="2">In progress</option>
 							<option value="3">Done</option>
 						</select>
+						<?php if(isset($_SESSION['statusErr'])){
+							echo '<div class="alert alert-red mt-2" role="alert">'.$_SESSION['statusErr'].'</div>';
+							unset($_SESSION['statusErr']);
+						}?>
 					</div>
 					<div class="mb-3">
 						<label class="col-form-label">Date</label>
 						<input type="date" class="form-control" id="date" name="date">
+						<?php if(isset($_SESSION['dateErr'])){
+							echo '<div class="alert alert-red mt-2" role="alert">'.$_SESSION['dateErr'].'</div>';
+							unset($_SESSION['dateErr']);
+						}?>
 					</div>
 					<div class="mb-3">
 						<label class="col-form-label">Description</label>
 						<textarea class="form-control" rows="5" id="description" name="description"></textarea>
+						<?php if(isset($_SESSION['descriptionErr'])){
+							echo '<div class="alert alert-red mt-2" role="alert">'.$_SESSION['descriptionErr'].'</div>';
+							unset($_SESSION['descriptionErr']);
+						}?>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -211,5 +242,11 @@
 	<!-- ================== END core-js ================== -->
 	 <script src="assets/js/data.js"></script>
 	<script src="assets/js/app.js"></script>
+	<?php
+	if(isset($_SESSION['error'])){
+		echo $_SESSION['error'];
+		unset($_SESSION['error']);
+	}
+	 ?>
 </body>
 </html>
