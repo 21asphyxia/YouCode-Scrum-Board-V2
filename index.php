@@ -228,7 +228,8 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-light text-black border" data-bs-dismiss="modal" id="cancel-button">Cancel</button>
-					<button type="submit" name="delete" class="btn btn-outline-danger border" id="delete-button">Delete</button>
+					<button type="button" name="delete" class="btn btn-outline-danger border" id="delete-button">Delete</button>
+					<button type="submit" name="delete" class="d-none" id="hiddenDelete">Delete</button>
 					<button type="submit" name="save" id="save-button" class="btn btn-primary" disabled>Save</button>
 					<button type="submit" name="update" class="btn btn-primary" id="update-button">Update</button>
 				</div>
@@ -239,6 +240,7 @@
 	<!-- ================== BEGIN core-js ================== -->
 	<script src="assets/js/vendor.min.js"></script>
 	<script src="assets/js/app.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<!-- ================== END core-js ================== -->
 	 <script src="assets/js/data.js"></script>
 	<script src="assets/js/app.js"></script>
