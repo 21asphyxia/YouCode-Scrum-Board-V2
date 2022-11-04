@@ -2,7 +2,7 @@
     $servername ="localhost";
     $username = "root";
     $password = "";
-    $db = "test";
+    $db = "youcodescrumboard";
     //CONNECT TO MYSQL DATABASE USING MYSQLI
     
     // Create connection
